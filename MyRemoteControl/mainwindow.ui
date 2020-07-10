@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>简易远程控制</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>服务端</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="minimumSize">
+           <size>
+            <width>300</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="title">
+           <string>连接列表</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QListWidget" name="listWidget"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QGroupBox" name="groupBox_3">
+             <property name="title">
+              <string>服务端设置</string>
+             </property>
+             <widget class="QPushButton" name="startServer">
+              <property name="geometry">
+               <rect>
+                <x>330</x>
+                <y>170</y>
+                <width>93</width>
+                <height>41</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>启动服务端</string>
+              </property>
+             </widget>
+             <widget class="QWidget" name="layoutWidget">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>30</y>
+                <width>286</width>
+                <height>83</height>
+               </rect>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_6">
+                 <item>
+                  <widget class="QLabel" name="label_3">
+                   <property name="text">
+                    <string>服务端端口：</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="serverPort">
+                   <property name="text">
+                    <string>10086</string>
+                   </property>
+                   <property name="frame">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_7">
+                 <item>
+                  <widget class="QLabel" name="label_4">
+                   <property name="text">
+                    <string>最大连接数：</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="serverMaxClient">
+                   <property name="text">
+                    <string>10</string>
+                   </property>
+                   <property name="frame">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_8">
+                 <item>
+                  <widget class="QLabel" name="label_5">
+                   <property name="text">
+                    <string>心跳间隔(ms)：</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="serverInterval">
+                   <property name="text">
+                    <string>3000</string>
+                   </property>
+                   <property name="frame">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_2">
+             <property name="title">
+              <string>控制面板</string>
+             </property>
+             <widget class="QPushButton" name="CMDButton">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>30</y>
+                <width>93</width>
+                <height>28</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>CMD控制</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="hookButton">
+              <property name="geometry">
+               <rect>
+                <x>120</x>
+                <y>30</y>
+                <width>93</width>
+                <height>28</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>键盘监控</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="hookButton_2">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="geometry">
+               <rect>
+                <x>320</x>
+                <y>30</y>
+                <width>93</width>
+                <height>28</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>屏幕控制</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="hookButton_3">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="geometry">
+               <rect>
+                <x>220</x>
+                <y>30</y>
+                <width>93</width>
+                <height>28</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>摄像头监控</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="hookButton_4">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>70</y>
+                <width>93</width>
+                <height>28</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>发送消息</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="hookButton_5">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="geometry">
+               <rect>
+                <x>120</x>
+                <y>70</y>
+                <width>93</width>
+                <height>28</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>发送文件</string>
+              </property>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>客户端</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="title">
+           <string>客户端设置</string>
+          </property>
+          <widget class="QPushButton" name="clientConnect">
+           <property name="geometry">
+            <rect>
+             <x>320</x>
+             <y>40</y>
+             <width>93</width>
+             <height>51</height>
+            </rect>
+           </property>
+           <property name="toolTipDuration">
+            <number>-1</number>
+           </property>
+           <property name="text">
+            <string>连接</string>
+           </property>
+          </widget>
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>40</y>
+             <width>271</width>
+             <height>54</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>服务端IP地址：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="connectIP">
+                <property name="text">
+                 <string>127.0.0.1</string>
+                </property>
+                <property name="frame">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>服务端端口：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="connectPort">
+                <property name="text">
+                 <string>10086</string>
+                </property>
+                <property name="frame">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
