@@ -16,12 +16,10 @@ void CMDThread::startThread()
     isStop = false;
 
     this->start();
-    qDebug()<<"开启线程";
 }
 
 void CMDThread::exctCMD(char *data)
 {
-    qDebug()<<"收到cmd命令";
     char szBuf[256] = { 0 };
     int len = strlen(data);
     memcpy(szBuf, data, len);
@@ -39,6 +37,7 @@ void CMDThread::exctCMD(char *data)
 
 void CMDThread::run()
 {
+
     //CreatePipe
     HANDLE hCmdReadPipe;
     HANDLE hMyReadPipe;
@@ -83,7 +82,8 @@ void CMDThread::run()
         if (nReadBytes > 0){
             QTextCodec *codec = QTextCodec::codecForName("GBK");
             QString outString = codec->toUnicode(szOutBuf);
-            emit client_send_data((int)common::packetType::cmd, outString);
+            QByteArray data = outString.toUtf8();
+            emit client_send_data((int)common::packetType::cmd, data);
         }
     }
 }

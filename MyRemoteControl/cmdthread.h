@@ -4,8 +4,8 @@
 #include<QThread>
 #include<QObject>
 #include <QTextCodec>
+#include "commondata.h"
 #include"windows.h"
-#include<netclient.h>
 
 class CMDThread : public QThread
 {
@@ -24,7 +24,7 @@ private:
 
     HANDLE hMyWritePipe;
 signals:
-    void client_send_data(int type,QString data);
+    void client_send_data(int type,QByteArray data);
 };
 
 #endif // CMDTHREAD_H

@@ -3,7 +3,7 @@
 
 #include<QTcpSocket>
 #include<QHostAddress>
-
+#include<qmath.h>
 #include<commondata.h>
 
 class NetClient : public QObject
@@ -18,8 +18,10 @@ public:
 private:
     QTcpSocket* tcpSocket;
     QByteArray readBuf;
+    QList<QByteArray> datasBuf;
+    QList<int> numsBuf;
 signals:
-    void readData(common::UPacket* paket);
+    void readData(common::packetType type, char* data);
 };
 
 #endif // NETCLIENT_H

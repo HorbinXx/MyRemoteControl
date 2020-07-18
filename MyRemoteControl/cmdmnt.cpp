@@ -34,5 +34,6 @@ void CMDMnt::on_exctButton_clicked()
     if(index<0)return;//TODO
     QByteArray ba=ui->CMDLine->text().toLatin1();
     char *data=ba.data();
+    ui->CMDLine->setText("");
     emit exctCMD(data);
 }

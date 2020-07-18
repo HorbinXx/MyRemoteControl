@@ -181,9 +181,9 @@
                <string>键盘监控</string>
               </property>
              </widget>
-             <widget class="QPushButton" name="hookButton_2">
+             <widget class="QPushButton" name="capturerButton">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="geometry">
                <rect>
@@ -194,7 +194,7 @@
                </rect>
               </property>
               <property name="text">
-               <string>屏幕控制</string>
+               <string>屏幕监控</string>
               </property>
              </widget>
              <widget class="QPushButton" name="hookButton_3">

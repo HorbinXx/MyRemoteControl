@@ -16,8 +16,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    capturermnt.cpp \
+    capturerthread.cpp \
     cmdmnt.cpp \
     cmdthread.cpp \
+    funclient.cpp \
+    funserver.cpp \
     keyboardmnt.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -25,15 +29,20 @@ SOURCES += \
     netserver.cpp
 
 HEADERS += \
+    capturermnt.h \
+    capturerthread.h \
     cmdmnt.h \
     cmdthread.h \
     commondata.h \
+    funclient.h \
+    funserver.h \
     keyboardmnt.h \
     mainwindow.h \
     netclient.h \
     netserver.h
 
 FORMS += \
+    capturermnt.ui \
     cmdmnt.ui \
     keyboardmnt.ui \
     mainwindow.ui

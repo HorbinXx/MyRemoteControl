@@ -3,7 +3,7 @@
 
 #include<QTcpServer>
 #include<QTcpSocket>
-
+#include<qmath.h>
 #include<commondata.h>
 
 class NetServer : public QObject
@@ -21,6 +21,8 @@ private:
     int maxClient;
 
     QByteArray readBuf;
+    QList<QByteArray> datasBuf;
+    QList<int> numsBuf;
 private:
     void newConnection();
     void disConnected(QAbstractSocket::SocketState socketState);
@@ -28,7 +30,7 @@ private:
 signals:
     void newClient(QTcpSocket* socket);
     void disClient(int index);
-    void readData(common::UPacket* paket);
+    void readData(common::packetType type, char* data);
 };
 
 #endif // NETSERVER_H
