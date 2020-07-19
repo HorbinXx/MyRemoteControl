@@ -1,22 +1,10 @@
 #include "cmdthread.h"
 
-CMDThread::CMDThread(QObject *parent) : QThread(parent)
+CMDThread::CMDThread()
 {
-    isStop = false;
-    this->start();
+
 }
 
-void CMDThread::closeThread()
-{
-    isStop = true;
-}
-
-void CMDThread::startThread()
-{
-    isStop = false;
-
-    this->start();
-}
 
 void CMDThread::exctCMD(char *data)
 {

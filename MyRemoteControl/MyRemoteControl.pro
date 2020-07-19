@@ -22,9 +22,11 @@ SOURCES += \
     cmdthread.cpp \
     funclient.cpp \
     funserver.cpp \
+    heartthread.cpp \
     keyboardmnt.cpp \
     main.cpp \
     mainwindow.cpp \
+    mythread.cpp \
     netclient.cpp \
     netserver.cpp
 
@@ -36,8 +38,10 @@ HEADERS += \
     commondata.h \
     funclient.h \
     funserver.h \
+    heartthread.h \
     keyboardmnt.h \
     mainwindow.h \
+    mythread.h \
     netclient.h \
     netserver.h
 

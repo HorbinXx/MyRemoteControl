@@ -86,9 +86,8 @@ void MainWindow::on_hookButton_clicked()
 void MainWindow::on_startServer_clicked()
 {
     int port = ui->serverPort->text().toInt();
-    int interval = ui->serverInterval->text().toUInt();
     int maxClient = ui->serverMaxClient->text().toInt();
-    this->netServer = new NetServer(port, interval, maxClient);
+    this->netServer = new NetServer(port, maxClient);
     //TODO 判断是否出现问题
     connect(netServer, &NetServer::newClient, this, &MainWindow::on_newClient);
     connect(netServer, &NetServer::disClient, this, &MainWindow::on_disClient);
@@ -174,7 +173,7 @@ void MainWindow::dispatchClientData(common::packetType type, char* data)
     }
 }
 
-void MainWindow::dispatchServerData(common::packetType type, char* data)
+void MainWindow::dispatchServerData(common::packetType type, int index, char* data)
 {
     switch (type) {
     case common::packetType::cmd:
@@ -185,6 +184,9 @@ void MainWindow::dispatchServerData(common::packetType type, char* data)
         break;
     case common::packetType::capture:
         capturerMnt->refresh(data);
+        break;
+    case common::packetType::other:
+        if(!QString(data).compare("beat"))netServer->beat(index);
         break;
     }
 }

@@ -5,10 +5,15 @@ NetClient::NetClient(QString serverIP, int serverPort)
     tcpSocket = new QTcpSocket(this);
     tcpSocket->connectToHost(QHostAddress(serverIP), serverPort);
     connect(tcpSocket, &QTcpSocket::readyRead, this, &NetClient::read);
+
+    heartThread = new HeartThread(interval);
+    connect(heartThread, &HeartThread::beat, this, &NetClient::beat);
+    heartThread->startThread();
 }
 
 void NetClient::close()
 {
+    heartThread->closeThread();
     tcpSocket->close();
 }
 
@@ -93,4 +98,10 @@ void NetClient::read()
         readBuf = tmpBuf;//更新缓存
         total_length = readBuf.size();//更新长度
     }
+}
+
+void NetClient::beat()
+{
+    char data[] = "beat";
+    send(common::packetType::other, data);
 }

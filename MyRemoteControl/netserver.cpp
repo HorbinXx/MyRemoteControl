@@ -1,13 +1,15 @@
 #include "netserver.h"
-#include<QDebug>
-NetServer::NetServer(int port, int interval, int maxClient)
+#include <QDebug>
+NetServer::NetServer(int port, int maxClient)
 {
     tcpServer = new QTcpServer(this);
     tcpServer->listen(QHostAddress::Any, port);
     connect(tcpServer, &QTcpServer::newConnection, this, &NetServer::newConnection);
-
-    this->interval = interval;
     this->maxClient = maxClient;
+
+    heartThread = new HeartThread(interval);
+    connect(heartThread, &HeartThread::beat, this, &NetServer::socketsBeat);
+    heartThread->startThread();
 }
 
 bool NetServer::send(int index, common::packetType type, char* data)
@@ -48,6 +50,7 @@ void NetServer::read()
 {
     QTcpSocket* socket = (QTcpSocket*)sender();
     QByteArray tmpBuf = socket->readAll();
+    int index = tcpSockets.indexOf(socket);
     readBuf.append(tmpBuf);
     int total_length = readBuf.size();
     while(total_length > (int)PACKET_HEAD_LEN){
@@ -84,14 +87,14 @@ void NetServer::read()
                 char *charData = new char[len+1];
                 memcpy(charData, data, len);
                 charData[len] = 0;
-                emit readData((common::packetType)type, charData);
+                emit readData((common::packetType)type, index, charData);
             }
         }else{
             char *data = new char[len+1];
             memcpy(data, tmpBuf, len);
             tmpBuf.remove(0, len);
             data[len] = 0;
-            emit readData((common::packetType)type, data);
+            emit readData((common::packetType)type, index, data);
         }
         readBuf = tmpBuf;//更新缓存
         total_length = readBuf.size();//更新长度
@@ -105,6 +108,7 @@ void NetServer::newConnection()
     connect(tcpSocket, &QTcpSocket::readyRead, this, &NetServer::read);
 
     tcpSockets.append(tcpSocket);
+    socketsBeatBuf.append(true);
     emit newClient(tcpSocket);
 }
 
@@ -114,6 +118,26 @@ void NetServer::disConnected(QAbstractSocket::SocketState socketState)
         QTcpSocket* tcpSocket = dynamic_cast<QTcpSocket*>(sender());
         int index = tcpSockets.indexOf(tcpSocket);
         tcpSockets.removeAt(index);
+        socketsBeatBuf.removeAt(index);
         emit disClient(index);
     }
+}
+
+void NetServer::socketsBeat()
+{
+    for(int i=0; i<socketsBeatBuf.length(); i++){
+        if(socketsBeatBuf[i]==true)socketsBeatBuf[i]=false;
+        else{
+            socketsBeatBuf.removeAt(i);
+            tcpSockets.removeAt(i);
+            emit disClient(i);
+            i--;
+        }
+    }
+}
+
+void NetServer::beat(int index)
+{
+    if(socketsBeatBuf.length()>index)
+        socketsBeatBuf[index] = true;
 }

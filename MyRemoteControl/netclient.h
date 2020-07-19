@@ -5,6 +5,7 @@
 #include<QHostAddress>
 #include<qmath.h>
 #include<commondata.h>
+#include<heartthread.h>
 
 class NetClient : public QObject
 {
@@ -20,6 +21,10 @@ private:
     QByteArray readBuf;
     QList<QByteArray> datasBuf;
     QList<int> numsBuf;
+
+    const int interval = 2000;
+    HeartThread *heartThread;
+    void beat();
 signals:
     void readData(common::packetType type, char* data);
 };

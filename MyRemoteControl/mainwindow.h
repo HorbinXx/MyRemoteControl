@@ -56,7 +56,7 @@ private:
     QLibrary* hookLib;
 
     void dispatchClientData(common::packetType type, char* data);
-    void dispatchServerData(common::packetType type, char* data);
+    void dispatchServerData(common::packetType type, int index,char* data);
     void on_client_send_data(int, QByteArray);
 
     void client_CMD(bool on_off);

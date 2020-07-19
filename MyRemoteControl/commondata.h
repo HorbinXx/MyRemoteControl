@@ -9,7 +9,8 @@ namespace common {
 enum packetType{
     cmd,
     keyHook,
-    capture
+    capture,
+    other
 };
 
 #pragma pack(push, 2)

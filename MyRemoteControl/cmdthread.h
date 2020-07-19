@@ -5,26 +5,20 @@
 #include<QObject>
 #include <QTextCodec>
 #include "commondata.h"
-#include"windows.h"
+#include "windows.h"
+#include "mythread.h"
 
-class CMDThread : public QThread
+class CMDThread : public MyThread
 {
     Q_OBJECT
 public:
-    CMDThread(QObject *parent = 0);
-    void closeThread();
-    void startThread();
-
+    CMDThread();
     void exctCMD(char* data);
 
 protected:
     virtual void run();
 private:
-    volatile bool isStop;
-
     HANDLE hMyWritePipe;
-signals:
-    void client_send_data(int type,QByteArray data);
 };
 
 #endif // CMDTHREAD_H

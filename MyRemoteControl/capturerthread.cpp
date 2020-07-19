@@ -3,24 +3,12 @@
 
 CapturerThread::CapturerThread()
 {
-    isStop = false;
-    this->start();
-}
 
-void CapturerThread::closeThread()
-{
-    isStop = true;
-}
-
-void CapturerThread::startThread()
-{
-    isStop = false;
-    this->start();
 }
 
 void CapturerThread::run()
 {
-    while (true) {
+    while (!isStop) {
         QScreen* screen = QGuiApplication::primaryScreen();
         QPixmap desktopImg = screen->grabWindow(0);
         QByteArray byteArray = QByteArray();
